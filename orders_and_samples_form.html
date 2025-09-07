@@ -22,23 +22,38 @@
             </div>
             
             <div class="form-group">
-                <label for="clientName">اسم العميل</label>
-                <input type="text" id="clientName" name="clientName" required>
+                <label for="company">اسم الشركة</label>
+                <input type="text" id="company" name="company">
+            </div>
+
+            <div class="form-group">
+                <label for="responsiblePerson">الشخص المسئول</label>
+                <input type="text" id="responsiblePerson" name="responsiblePerson">
             </div>
             
             <div class="form-group">
                 <label for="phone">رقم التليفون</label>
                 <input type="tel" id="phone" name="phone">
             </div>
+
+            <div class="form-group">
+                <label for="supplyOrderNumber">رقم أمر التوريد</label>
+                <input type="text" id="supplyOrderNumber" name="supplyOrderNumber">
+            </div>
+            
+            <div class="form-group">
+                <label for="supplyDate">تاريخ التوريد</label>
+                <input type="date" id="supplyDate" name="supplyDate">
+            </div>
+
+            <div class="form-group">
+                <label for="deliveryLocation">مكان التسليم</label>
+                <input type="text" id="deliveryLocation" name="deliveryLocation">
+            </div>
             
             <div class="form-group">
                 <label for="address">العنوان</label>
                 <input type="text" id="address" name="address">
-            </div>
-            
-            <div class="form-group">
-                <label for="company">اسم الشركة</label>
-                <input type="text" id="company" name="company">
             </div>
 
             <h3>تفاصيل الأصناف</h3>
@@ -153,7 +168,13 @@
                 data.type = submissionType;
                 data.itemsData = JSON.stringify(items);
                 
-                const url = 'https://script.google.com/macros/s/AKfycby112sntrmuNOKN18fR1JMiDGd4PFVoFL9RxQmV01o_TTjw2Uq-WbOJpO_jTIVjhTQI/exec';
+                // إضافة الحقول الجديدة هنا
+                data.responsiblePerson = document.getElementById('responsiblePerson').value;
+                data.supplyOrderNumber = document.getElementById('supplyOrderNumber').value;
+                data.supplyDate = document.getElementById('supplyDate').value;
+                data.deliveryLocation = document.getElementById('deliveryLocation').value;
+
+                const url = 'https://script.google.com/macros/s/AKfycbxUtDxJW4TGwfVu2N3_hcUvz-sVd_Lp7T-aBgCAalXHU9gZwcfjzkWAsU8yopJcu-Qc/exec';
                 const params = new URLSearchParams(data);
 
                 fetch(url, {
