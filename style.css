@@ -8,6 +8,8 @@ body {
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
+    direction: rtl;       /* تم إضافة هذا السطر */
+    text-align: right;    /* تم إضافة هذا السطر */
 }
 .container {
     background-color: #fff;
