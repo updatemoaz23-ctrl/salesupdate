@@ -1,4 +1,9 @@
-<style>
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <title>لوحة التحكم</title>
+  <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f8f8f8; /* خلفية فاتحة */
@@ -50,4 +55,27 @@
         font-size: 12px;
         margin-top: 5px;
     }
-</style>
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>لوحة التحكم</h2>
+    <div class="grid-container">
+      <div class="icon-card" onclick="window.location.href = 'Inventory.html';">
+        <img src="https://img.icons8.com/plasticine/100/000000/warehouse.png" alt="المخزون">
+        <span>المخزون</span>
+      </div>
+      <div class="icon-card">
+        <img src="https://img.icons8.com/plasticine/100/000000/box.png" alt="الأوردرات">
+        <span>الأوردرات</span>
+        <div class="coming-soon">(قريباً)</div>
+      </div>
+      <div class="icon-card">
+        <img src="https://img.icons8.com/plasticine/100/000000/test-tube.png" alt="العينات">
+        <span>العينات</span>
+        <div class="coming-soon">(قريباً)</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
