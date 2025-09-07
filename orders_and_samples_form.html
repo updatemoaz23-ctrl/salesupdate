@@ -82,12 +82,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // متغير لتتبع عدد حقول الأصناف
             let itemCounter = 1;
-
-            // زر إضافة صنف آخر
             const addItemBtn = document.getElementById('addItemBtn');
             const itemsContainer = document.getElementById('itemsContainer');
+            const form = document.getElementById('submissionForm');
+            const responseMessage = document.getElementById('responseMessage');
             
             addItemBtn.addEventListener('click', function() {
                 const itemGroup = document.createElement('div');
@@ -115,21 +114,18 @@
                 itemCounter++;
             });
 
-            // حذف حقل صنف
             itemsContainer.addEventListener('click', function(event) {
                 if (event.target.classList.contains('removeItemBtn')) {
                     event.target.parentElement.remove();
                 }
             });
 
-            // معالجة إرسال النموذج
-            const form = document.getElementById('submissionForm');
-            const responseMessage = document.getElementById('responseMessage');
-            
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                // جمع بيانات الأصناف الديناميكية
+                const submittingButton = e.submitter;
+                const submissionType = submittingButton.value;
+
                 const items = [];
                 const itemGroups = itemsContainer.querySelectorAll('.item-group');
                 itemGroups.forEach(group => {
@@ -138,7 +134,7 @@
                     const quantity = group.querySelector('.quantity').value;
                     const price = group.querySelector('.price').value;
                     
-                    if (itemName && quantity) { // تأكد من أن الحقول الرئيسية ليست فارغة
+                    if (itemName && quantity) {
                         items.push({
                             name: itemName,
                             batchId: batchId,
@@ -148,21 +144,18 @@
                     }
                 });
 
-                // جمع باقي بيانات النموذج
                 const formData = new FormData(form);
                 const data = {};
                 formData.forEach((value, key) => {
                     data[key] = value;
                 });
                 
-                // إضافة بيانات الأصناف إلى البيانات الرئيسية
+                data.type = submissionType;
                 data.itemsData = JSON.stringify(items);
                 
-                // إعداد البيانات للـ fetch
                 const url = 'https://script.google.com/macros/s/AKfycby112sntrmuNOKN18fR1JMiDGd4PFVoFL9RxQmV01o_TTjw2Uq-WbOJpO_jTIVjhTQI/exec';
                 const params = new URLSearchParams(data);
 
-                // إرسال البيانات
                 fetch(url, {
                     method: 'POST',
                     body: params
@@ -172,7 +165,7 @@
                     if (result.status === 'success') {
                         responseMessage.textContent = 'تم تسجيل البيانات بنجاح!';
                         responseMessage.className = 'response-message success';
-                        form.reset(); // إعادة تعيين النموذج
+                        form.reset();
                     } else {
                         responseMessage.textContent = 'حدث خطأ: ' + result.message;
                         responseMessage.className = 'response-message error';
