@@ -5,63 +5,80 @@
   <title>لوحة التحكم</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
       background-color: #f8f8f8; /* خلفية فاتحة */
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
+      color: #1a3e66; /* لون النص الأساسي */
     }
     .container {
       text-align: center;
       background-color: #fff; /* خلفية بيضاء */
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 30px 40px; /* زيادة التباعد الداخلي */
+      border-radius: 12px; /* حواف أكثر دائرية */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* ظل أوضح */
+      width: 90%; /* عرض أكبر للكونتينر */
+      max-width: 600px; /* أقصى عرض للكونتينر */
+    }
+    .logo {
+      margin-bottom: 25px; /* مسافة أسفل اللوجو */
+    }
+    .logo img {
+      width: 180px; /* حجم أكبر للوجو */
+      height: auto;
+    }
+    h2 {
+      color: #1a3e66; /* أزرق داكن للعناوين */
+      margin-top: 0;
+      margin-bottom: 30px; /* مسافة أسفل العنوان */
+      font-size: 2em; /* حجم أكبر للعنوان */
     }
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(2, 1fr); /* تم التعديل إلى عمودين فقط */
-      gap: 20px;
-      margin-top: 20px;
+      grid-template-columns: repeat(2, 1fr); /* عمودين */
+      gap: 25px; /* فجوة أكبر بين الأيقونات */
     }
     .icon-card {
-      background-color: #f0f8ff; /* لون أزرق فاتح جداً */
-      padding: 20px;
-      border-radius: 8px;
+      background-color: #e6f2ff; /* لون أزرق فاتح جداً لخلفية البطاقة */
+      padding: 30px; /* زيادة التباعد الداخلي للأيقونة */
+      border-radius: 10px;
       text-align: center;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
     }
     .icon-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-7px); /* تأثير ارتفاع أكبر عند التحويم */
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* ظل أوضح عند التحويم */
+      background-color: #dbeeff; /* تغيير بسيط للخلفية عند التحويم */
     }
     .icon-card img {
-      width: 50px;
-      height: 50px;
-      margin-bottom: 10px;
+      width: 80px; /* حجم أكبر للأيقونات */
+      height: 80px;
+      margin-bottom: 15px; /* مسافة أسفل الأيقونة */
     }
     .icon-card span {
       font-weight: bold;
       color: #1a3e66; /* أزرق داكن مطابق للوجو */
-    }
-    h2 {
-      color: #1a3e66; /* أزرق داكن للعناوين */
+      font-size: 1.2em; /* حجم أكبر للنص أسفل الأيقونة */
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <div class="logo">
+      <img src="logo.png" alt="Update Import & Export Logo"> 
+    </div>
     <h2>لوحة التحكم</h2>
     <div class="grid-container">
       <div class="icon-card" onclick="window.location.href = 'inventory_login.html';">
-        <img src="https://img.icons8.com/plasticine/100/000000/warehouse.png" alt="المخزون">
+        <img src="https://img.icons8.com/color/96/warehouse.png" alt="المخزون">
         <span>المخزون</span>
       </div>
       <div class="icon-card" onclick="alert('قسم الأوردرات والعينات قيد الإنشاء')">
-        <img src="https://img.icons8.com/plasticine/100/000000/box.png" alt="الأوردرات والعينات">
+        <img src="https://img.icons8.com/color/96/cardboard-box.png" alt="الأوردرات والعينات">
         <span>الأوردرات والعينات</span>
       </div>
     </div>
