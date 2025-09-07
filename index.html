@@ -22,7 +22,7 @@
     }
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr); /* تم التعديل إلى عمودين فقط */
       gap: 20px;
       margin-top: 20px;
     }
@@ -50,30 +50,19 @@
     h2 {
       color: #1a3e66; /* أزرق داكن للعناوين */
     }
-    .coming-soon {
-        color: #888;
-        font-size: 12px;
-        margin-top: 5px;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>لوحة التحكم</h2>
     <div class="grid-container">
-      <div class="icon-card" onclick="window.location.href = 'Inventory.html';">
+      <div class="icon-card" onclick="window.location.href = 'inventory_login.html';">
         <img src="https://img.icons8.com/plasticine/100/000000/warehouse.png" alt="المخزون">
         <span>المخزون</span>
       </div>
-      <div class="icon-card">
-        <img src="https://img.icons8.com/plasticine/100/000000/box.png" alt="الأوردرات">
-        <span>الأوردرات</span>
-        <div class="coming-soon">(قريباً)</div>
-      </div>
-      <div class="icon-card">
-        <img src="https://img.icons8.com/plasticine/100/000000/test-tube.png" alt="العينات">
-        <span>العينات</span>
-        <div class="coming-soon">(قريباً)</div>
+      <div class="icon-card" onclick="alert('قسم الأوردرات والعينات قيد الإنشاء')">
+        <img src="https://img.icons8.com/plasticine/100/000000/box.png" alt="الأوردرات والعينات">
+        <span>الأوردرات والعينات</span>
       </div>
     </div>
   </div>
