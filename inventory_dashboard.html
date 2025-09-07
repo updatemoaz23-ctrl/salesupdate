@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>لوحة تحكم المخزون</title>
+    <style>
+        :root {
+            /* ألوان جديدة تتناسب مع لوجو الشركة */
+            --primary-dark: #1a3e66;
+            --secondary-color: #2a9d8f;
+            --light-bg: #f8f8f8;
+            --white: #ffffff;
+            --input-border: #ccc;
+            --button-bg: var(--primary-dark);
+            --button-hover: #247ba0;
+            --text-color: var(--primary-dark);
+            --header-bg: var(--primary-dark);
+            --header-text-color: var(--white);
+            --table-row-even-bg: #e6f2ff; /* لون فاتح جداً من الأزرق */
+            --error-bg: #f8d7da;
+            --error-text: #721c24;
+            --info-bg: #d4edda;
+            --info-text: #155724;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+            direction: rtl;
+        }
+
+        .dashboard-container {
+            background-color: var(--white);
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            max-width: 180px; /* حجم أكبر للوجو */
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--primary-dark);
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        
+        .search-section {
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-section input[type="text"] {
+            flex-grow: 1;
+            max-width: 400px;
+            padding: 12px;
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box;
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .search-section button {
+            background-color: var(--button-bg);
+            color: var(--white);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        
+        .search-section button:hover {
+            background-color: var(--button-hover);
+        }
+
+        #loadingSpinner {
+            display: none;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--secondary-color);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 15px auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        #resultsTableContainer {
+            overflow-x: auto;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        #resultsTable {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        
+        #resultsTable th, #resultsTable td {
+            border: 1px solid var(--input-border);
+            padding: 12px;
+            text-align: right;
+            white-space: nowrap;
+        }
+        
+        #resultsTable th {
+            background-color: var(--header-bg);
+            color: var(--header-text-color);
+            font-weight: bold;
+        }
+        
+        #resultsTable tr:nth-child(even) {
+            background-color: var(--table-row-even-bg);
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            font-weight: bold;
+            border: 1px solid;
+            text-align: right;
+        }
+        
+        .message.error {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            border-color: var(--error-text);
+        }
+        
+        .message.info {
+            background-color: var(--info-bg);
+            color: var(--info-text);
+            border-color: var(--info-text);
+        }
+        
+        #logoutButton {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        
+        #logoutButton:hover {
+            background-color: #c82333;
+        }
+        
+        .numeric-cell {
+            direction: ltr;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <img src="logo.png" alt="Update Import & Export Logo" class="logo">
+        <h1>لوحة تحكم المخزون</h1>
+        <p>مرحباً</p>
+
+        <div class="search-section">
+            <input type="text" id="itemNameInput" placeholder="ابحث باسم الصنف...">
+            <button id="searchButton">بحث</button>
+        </div>
+
+        <div id="loadingSpinner"></div>
+        <div id="message" class="message"></div>
+
+        <div id="resultsTableContainer">
+            <table id="resultsTable">
+                <thead><tr></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <button id="logoutButton">تسجيل الخروج</button>
+    </div>
+
+    <script>
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxTiy_priVEuyNCkYMryC1wf5HrlBjv9M763PcI3g2ZcdwzlfI1ISaaF0zoWLmWDiWoTQ/exec';
+
+        const itemNameInput = document.getElementById('itemNameInput');
+        const searchButton = document.getElementById('searchButton');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const messageDiv = document.getElementById('message');
+        const resultsTableHead = document.querySelector('#resultsTable thead');
+        const resultsTableBody = document.querySelector('#resultsTable tbody');
+        const logoutButton = document.getElementById('logoutButton');
+
+        let currentUserRole = localStorage.getItem('inventoryUserRole');
+        let currentEmployeeId = localStorage.getItem('inventoryEmployeeId');
+
+        if (!currentEmployeeId || !currentUserRole) {
+            window.location.href = `inventory_login.html`;
+        }
+
+        searchButton.addEventListener('click', doSearch);
+        itemNameInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                doSearch();
+            }
+        });
+        logoutButton.addEventListener('click', doLogout);
+
+        function showMessage(msg, type) {
+            messageDiv.textContent = msg;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+        }
+
+        function showLoading() {
+            loadingSpinner.style.display = 'block';
+            searchButton.disabled = true;
+            itemNameInput.disabled = true;
+            resultsTableBody.innerHTML = '';
+            resultsTableHead.innerHTML = '';
+            messageDiv.style.display = 'none';
+        }
+
+        function hideLoading() {
+            loadingSpinner.style.display = 'none';
+            searchButton.disabled = false;
+            itemNameInput.disabled = false;
+        }
+
+        async function doSearch() {
+            const itemName = itemNameInput.value.trim();
+            if (!itemName) {
+                showMessage('الرجاء إدخال اسم الصنف للبحث.', 'info');
+                return;
+            }
+
+            showLoading();
+
+            const params = new URLSearchParams();
+            params.append('action', 'searchInventory');
+            params.append('itemName', itemName);
+            params.append('userRole', currentUserRole);
+
+            try {
+                const response = await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: params.toString()
+                });
+
+                const result = await response.json();
+                hideLoading();
+
+                if (result.status === 'success') {
+                    displayResults(result.data);
+                    if (result.data.length === 0 && result.message) {
+                        showMessage(result.message, 'info');
+                    }
+                } else {
+                    showMessage(result.message || 'خطأ في البحث.', 'error');
+                }
+            } catch (error) {
+                hideLoading();
+                showMessage('حدث خطأ في الاتصال بالخادم. الرجاء المحاولة لاحقاً.', 'error');
+                console.error('Fetch error:', error);
+            }
+        }
+
+        function displayResults(data) {
+            resultsTableHead.innerHTML = '';
+            resultsTableBody.innerHTML = '';
+
+            if (data.length === 0) {
+                resultsTableBody.innerHTML = `<tr><td colspan="100%" class="message info">لا توجد نتائج مطابقة.</td></tr>`;
+                return;
+            }
+
+            const headers = Object.keys(data[0]);
+            const headerRow = resultsTableHead.insertRow();
+            headers.forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+
+            data.forEach(item => {
+                const row = resultsTableBody.insertRow();
+                headers.forEach(headerText => {
+                    const cell = row.insertCell();
+                    const value = item[headerText];
+                    cell.textContent = value !== undefined && value !== null ? String(value) : '';
+                });
+            });
+        }
+
+        function doLogout() {
+            localStorage.removeItem('inventoryEmployeeId');
+            localStorage.removeItem('inventoryUserRole');
+            window.location.href = `inventory_login.html`;
+        }
+    </script>
+</body>
+</html>
